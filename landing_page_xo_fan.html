@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Montaña de Xo-Fan</title>
+  <!-- TailwindCSS vía CDN para estilos rápidos y responsivos -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gray-100 text-gray-900">
+  <!-- HERO / INTRO -->
+  <section id="intro" class="min-h-screen flex flex-col items-center justify-center bg-[url('imgs/hero.jpg')] bg-cover bg-center text-white text-center p-8">
+    <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow">La Montaña de Xo-Fan</h1>
+    <p class="max-w-xl text-lg md:text-2xl drop-shadow">
+      Duerme entre los árboles, respira aire puro y vive aventuras inolvidables en Mineral del Chico, Hidalgo.
+    </p>
+    <button id="btnStart" class="mt-8 bg-green-500 hover:bg-green-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg">
+      Explorar alojamientos
+    </button>
+  </section>
+
+  <!-- CONTENEDOR DE PASOS -->
+  <main id="steps" class="max-w-6xl mx-auto my-16 bg-white shadow-2xl rounded-2xl overflow-hidden">
+    <!-- PASO 1: ALOJAMIENTOS -->
+    <section data-step="1" class="p-8">
+      <h2 class="text-3xl font-extrabold mb-6 text-center">1. Elige tus alojamientos</h2>
+      <div id="lodgings" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- ===== PLANTILLA DE CARD (duplica y edita para cada alojamiento) ===== -->
+        <label class="cursor-pointer group">
+          <input type="checkbox" class="peer sr-only" data-name="Casita del Amanecer" data-price="2450">
+          <div class="border-2 border-transparent peer-checked:border-green-500 rounded-2xl overflow-hidden transition group-hover:shadow-xl">
+            <img src="imgs/amanecer.jpg" alt="Casita del Amanecer" class="h-48 w-full object-cover">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold">Casita del Amanecer</h3>
+              <p class="text-sm text-gray-600">Hasta 4 personas · Terraza panorámica</p>
+              <p class="mt-2 font-bold text-green-600">$2,450 MXN / noche</p>
+            </div>
+            <div class="bg-green-500 text-white text-center py-2 text-sm font-semibold opacity-0 peer-checked:opacity-100 transition">
+              ¡Seleccionada!
+            </div>
+          </div>
+        </label>
+        <!-- ===== FIN DE CARD ===== -->
+        <!-- Repite las cards para cada alojamiento disponible -->
+      </div>
+      <div class="text-center">
+        <button class="mt-10 nextStep bg-green-500 hover:bg-green-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg">
+          Siguiente: Tours
+        </button>
+      </div>
+    </section>
+
+    <!-- PASO 2: TOURS -->
+    <section data-step="2" class="p-8 hidden">
+      <h2 class="text-3xl font-extrabold mb-6 text-center">2. Elige tus tours</h2>
+      <div id="tours" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- ===== PLANTILLA DE CARD (duplica y edita para cada tour) ===== -->
+        <label class="cursor-pointer group">
+          <input type="checkbox" class="peer sr-only" data-name="Paquete Aventuras" data-price="650">
+          <div class="border-2 border-transparent peer-checked:border-green-500 rounded-2xl overflow-hidden transition group-hover:shadow-xl">
+            <img src="imgs/aventuras.jpg" alt="Paquete Aventuras" class="h-48 w-full object-cover">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold">Paquete Aventuras</h3>
+              <p class="text-sm text-gray-600">Puente extremo · Rappel · Columpio · Cine al aire libre</p>
+              <p class="mt-2 font-bold text-green-600">$650 MXN por persona</p>
+              <div class="mt-4 flex items-center gap-2">
+                <span class="text-sm">Personas:</span>
+                <input type="number" min="1" value="2" class="peopleInput w-20 border rounded-lg px-2 py-1 text-center">
+              </div>
+            </div>
+            <div class="bg-green-500 text-white text-center py-2 text-sm font-semibold opacity-0 peer-checked:opacity-100 transition">
+              ¡Seleccionado!
+            </div>
+          </div>
+        </label>
+        <!-- ===== FIN DE CARD ===== -->
+        <!-- Repite las cards para cada tour disponible -->
+      </div>
+      <div class="flex justify-between items-center mt-10">
+        <button class="prevStep text-gray-600 hover:underline">← Atrás</button>
+        <button class="nextStep bg-green-500 hover:bg-green-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg">
+          Siguiente: Fecha
+        </button>
+      </div>
+    </section>
+
+    <!-- PASO 3: FECHA Y CONFIRMACIÓN -->
+    <section data-step="3" class="p-8 hidden">
+      <h2 class="text-3xl font-extrabold mb-6 text-center">3. Elige tu fecha</h2>
+      <div class="mb-10 text-center">
+        <label class="block mb-4 font-semibold" for="dateInput">Fecha de llegada</label>
+        <input type="date" id="dateInput" class="border rounded-xl w-60 md:w-72 px-4 py-2 shadow">
+      </div>
+      <div class="flex justify-between items-center">
+        <button class="prevStep text-gray-600 hover:underline">← Atrás</button>
+        <button id="confirmBtn" class="bg-green-500 hover:bg-green-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg">
+          Reservar por WhatsApp
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- SCRIPT PARA NAVEGACIÓN Y WHATSAPP -->
+  <script>
+    const steps = document.querySelectorAll('[data-step]');
+    let currentStep = 0;
+
+    function showStep(i) {
+      steps.forEach((s, idx) => s.classList.toggle('hidden', idx !== i));
+      currentStep = i;
+      window.scrollTo({ top: steps[i].offsetTop - 20, behavior: 'smooth' });
+    }
+
+    document.getElementById('btnStart').addEventListener('click', () => showStep(0)); // Salta directo al primer paso
+
+    document.querySelectorAll('.nextStep').forEach(btn => {
+      btn.addEventListener('click', () => showStep(currentStep + 1));
+    });
+
+    document.querySelectorAll('.prevStep').forEach(btn => {
+      btn.addEventListener('click', () => showStep(currentStep - 1));
+    });
+
+    function assembleWhatsAppMessage() {
+      const selections = [];
+
+      // Alojamientos
+      document.querySelectorAll('#lodgings input:checked').forEach(item => {
+        selections.push(`🏡 Alojamiento: ${item.dataset.name} ($${item.dataset.price})`);
+      });
+
+      // Tours y personas
+      document.querySelectorAll('#tours input:checked').forEach(item => {
+        const people = item.closest('label').querySelector('.peopleInput').value;
+        selections.push(`🎒 Tour: ${item.dataset.name} x${people} ($${item.dataset.price} p/p)`);
+      });
+
+      const date = document.getElementById('dateInput').value;
+      if (date) selections.push(`📅 Fecha: ${date}`);
+
+      // Mensaje final
+      return encodeURIComponent(`Hola Julio, quiero reservar en La Montaña de Xo-Fan:\n${selections.join('\n')}`);
+    }
+
+    document.getElementById('confirmBtn').addEventListener('click', () => {
+      const msg = assembleWhatsAppMessage();
+      if (!msg.includes('Alojamiento')) {
+        alert('Por favor selecciona al menos un alojamiento.');
+        showStep(0);
+        return;
+      }
+      window.open(`https://wa.me/5217295703788?text=${msg}`, '_blank');
+    });
+  </script>
+</body>
+</html>
